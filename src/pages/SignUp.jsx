@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { signIn } from "../api/auth";
+import { signUp } from "../api/auth";
 import { AuthForm } from "../components/AuthForm";
 
 export const SignUp = () => {
@@ -15,13 +15,8 @@ export const SignUp = () => {
         password: e.target.password.value,
       };
 
-      try {
-        const isOk = await signIn(payload);
-        isOk && navigate("/signin");
-      } catch (error) {
-        console.log(error);
-        alert(error.response?.data?.message);
-      }
+      const isOk = await signUp(payload);
+      isOk && navigate("/signin");
     },
     [navigate]
   );
