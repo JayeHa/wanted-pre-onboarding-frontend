@@ -1,11 +1,14 @@
 import React, { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { signIn } from "../api/auth";
 import { AuthForm } from "../components/AuthForm";
 import { LOGIN_KEY } from "../constants";
-import { useLocalStorage } from "../hooks";
+import { useAuthRedirect, useLocalStorage } from "../hooks";
 
 export const SignIn = () => {
   const [, setLoginJWT] = useLocalStorage(LOGIN_KEY);
+  const navigate = useNavigate();
+  useAuthRedirect();
 
   const onSubmit = useCallback(
     async (e) => {
@@ -16,12 +19,13 @@ export const SignIn = () => {
         password: e.target.password.value,
       };
 
-      const jwt = await signIn(payload);
-      if (jwt) {
-        setLoginJWT(jwt);
+      const { access_token } = await signIn(payload);
+      if (access_token) {
+        setLoginJWT(access_token);
+        navigate(0);
       }
     },
-    [setLoginJWT]
+    [navigate, setLoginJWT]
   );
 
   return <AuthForm isSignIn onSubmit={onSubmit} />;

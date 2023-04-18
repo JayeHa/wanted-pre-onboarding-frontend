@@ -2,9 +2,11 @@ import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../api/auth";
 import { AuthForm } from "../components/AuthForm";
+import { useAuthRedirect } from "../hooks";
 
 export const SignUp = () => {
   const navigate = useNavigate();
+  useAuthRedirect();
 
   const onSubmit = useCallback(
     async (e) => {
