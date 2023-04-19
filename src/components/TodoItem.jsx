@@ -1,9 +1,24 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { updateTodo } from "../api/todo";
+import { useInput } from "../hooks";
 
 export const TodoItem = ({ todoItem, onDelete }) => {
   const [_todo, setTodo] = useState(todoItem);
-  const { id, todo, isCompleted, userId } = _todo;
+  const [isEdit, setIsEdit] = useState(false);
+  const newTodoInput = useInput(todoItem.todo);
+
+  const { id, todo, isCompleted } = _todo;
+
+  const editTodo = useCallback(
+    async ({ todo, isCompleted }) => {
+      const newTodo = await updateTodo(id, {
+        todo,
+        isCompleted,
+      });
+      setTodo(newTodo);
+    },
+    [id]
+  );
 
   return (
     <li>
@@ -11,27 +26,52 @@ export const TodoItem = ({ todoItem, onDelete }) => {
         <input
           type="checkbox"
           checked={isCompleted}
-          onChange={async (e) => {
-            const newTodo = await updateTodo(id, {
-              todo,
-              isCompleted: e.target.checked,
-            });
-            setTodo(newTodo);
+          onChange={(e) => {
+            editTodo({ todo, isCompleted: e.target.checked });
           }}
         />
-        <span>{todo}</span>
+        {isEdit ? (
+          <input data-testid="modify-input" {...newTodoInput} />
+        ) : (
+          <span>{todo}</span>
+        )}
       </label>
 
-      <button data-testid="modify-button" type="button">
-        수정
-      </button>
-      <button
-        data-testid="delete-button"
-        type="button"
-        onClick={() => onDelete(id)}
-      >
-        삭제
-      </button>
+      {!isEdit && (
+        <>
+          <button
+            data-testid="modify-button"
+            type="button"
+            onClick={() => setIsEdit(true)}
+          >
+            수정
+          </button>
+          <button
+            data-testid="delete-button"
+            type="button"
+            onClick={() => onDelete(id)}
+          >
+            삭제
+          </button>
+        </>
+      )}
+
+      {isEdit && (
+        <>
+          <button
+            data-testid="submit-button"
+            onClick={() => {
+              editTodo({ todo: newTodoInput.value, isCompleted });
+              setIsEdit(false);
+            }}
+          >
+            제출
+          </button>
+          <button data-testid="cancel-button" onClick={() => setIsEdit(false)}>
+            취소
+          </button>
+        </>
+      )}
     </li>
   );
 };
