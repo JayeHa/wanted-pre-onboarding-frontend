@@ -27,6 +27,7 @@ export const Todo = withAuth(() => {
 
   return (
     <div>
+      <h2>📌 투두</h2>
       <TodoAddForm onCreate={onCreate} />
 
       <ul>

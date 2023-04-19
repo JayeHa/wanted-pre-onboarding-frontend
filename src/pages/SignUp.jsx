@@ -23,5 +23,10 @@ export const SignUp = () => {
     [navigate]
   );
 
-  return <AuthForm onSubmit={onSubmit} />;
+  return (
+    <div>
+      <h2>📌 회원가입</h2>
+      <AuthForm onSubmit={onSubmit} />
+    </div>
+  );
 };
