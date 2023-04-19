@@ -1,11 +1,19 @@
-import React from "react";
-import { createTodo } from "../api/todo";
+import React, { useCallback } from "react";
+import { createTodo, deleteTodo } from "../api/todo";
 import { TodoForm, TodoItem } from "../components";
 import { withAuth } from "../hocs/withAuth";
 import { useTodoList } from "../hooks/useTodoList";
 
 export const Todo = withAuth(() => {
   const [todoList, setTodoList] = useTodoList();
+
+  const onDelete = useCallback(
+    (id) => {
+      deleteTodo(id);
+      setTodoList((prev) => prev.filter((todo) => todo.id !== id));
+    },
+    [setTodoList]
+  );
 
   return (
     <div>
@@ -19,7 +27,7 @@ export const Todo = withAuth(() => {
 
       <ul>
         {todoList.map((todo) => (
-          <TodoItem todoItem={todo} key={todo.id} />
+          <TodoItem todoItem={todo} key={todo.id} onDelete={onDelete} />
         ))}
       </ul>
     </div>
