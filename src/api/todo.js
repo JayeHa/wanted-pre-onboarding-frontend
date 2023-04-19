@@ -9,19 +9,16 @@ const instance = axios.create({
 
 export const createTodo = async (payload) => {
   const response = await instance.post("/todos", payload);
-  console.log(response);
   return response.data;
 };
 
 export const getTodos = async () => {
   const response = await instance.get("/todos");
-  console.log(response);
   return response.data;
 };
 
 export const updateTodo = async (id, payload) => {
   const response = await instance.put(`/todos/${id}`, payload);
-  console.log(response);
   return response.data;
 };
 
