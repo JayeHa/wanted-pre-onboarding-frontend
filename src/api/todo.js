@@ -18,3 +18,13 @@ export const getTodos = async () => {
   console.log(response);
   return response.data;
 };
+
+export const updateTodo = async (id, payload) => {
+  const response = await instance.put(`/todos/${id}`, payload);
+  console.log(response);
+  return response.data;
+};
+
+export const deleteTodo = async (id) => {
+  await instance.delete(`/todos/${id}`);
+};
