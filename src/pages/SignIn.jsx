@@ -18,8 +18,8 @@ export const SignIn = () => {
         email: e.target.email.value,
         password: e.target.password.value,
       };
-
       const { access_token } = await signIn(payload);
+
       if (access_token) {
         setLoginJWT(access_token);
         navigate(0);

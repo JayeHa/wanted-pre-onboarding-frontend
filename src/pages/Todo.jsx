@@ -1,12 +1,22 @@
 import React, { useCallback } from "react";
 import { createTodo, deleteTodo } from "../api/todo";
-import { TodoForm, TodoItem } from "../components";
+import { TodoAddForm, TodoItem } from "../components";
 import { withAuth } from "../hocs/withAuth";
 import { useTodoList } from "../hooks/useTodoList";
 
 export const Todo = withAuth(() => {
   const [todoList, setTodoList] = useTodoList();
 
+  /** 새로운 todo를 생성합니다. */
+  const onCreate = useCallback(
+    async (todo) => {
+      const newTodo = await createTodo({ todo });
+      setTodoList((prev) => [...prev, newTodo]);
+    },
+    [setTodoList]
+  );
+
+  /** 선택된 id를 가진 todo를 삭제합니다. */
   const onDelete = useCallback(
     (id) => {
       deleteTodo(id);
@@ -17,13 +27,7 @@ export const Todo = withAuth(() => {
 
   return (
     <div>
-      <TodoForm
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const newTodo = await createTodo({ todo: e.target.todo.value });
-          setTodoList((prev) => [...prev, newTodo]);
-        }}
-      />
+      <TodoAddForm onCreate={onCreate} />
 
       <ul>
         {todoList.map((todo) => (

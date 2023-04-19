@@ -6,9 +6,11 @@ export const TodoItem = ({ todoItem, onDelete }) => {
   const [_todo, setTodo] = useState(todoItem);
   const { id, todo, isCompleted } = _todo;
 
+  // edit관련
   const [isEdit, setIsEdit] = useState(false);
   const newTodoInput = useInput(todoItem.todo);
 
+  /** 선택된 id를 가진 todo를 변경합니다. */
   const editTodo = useCallback(
     async ({ todo, isCompleted }) => {
       const newTodo = await updateTodo(id, {
@@ -30,6 +32,7 @@ export const TodoItem = ({ todoItem, onDelete }) => {
             editTodo({ todo, isCompleted: e.target.checked });
           }}
         />
+
         {isEdit ? (
           <input data-testid="modify-input" {...newTodoInput} />
         ) : (
