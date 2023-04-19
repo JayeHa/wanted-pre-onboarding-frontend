@@ -4,10 +4,10 @@ import { useInput } from "../hooks";
 
 export const TodoItem = ({ todoItem, onDelete }) => {
   const [_todo, setTodo] = useState(todoItem);
+  const { id, todo, isCompleted } = _todo;
+
   const [isEdit, setIsEdit] = useState(false);
   const newTodoInput = useInput(todoItem.todo);
-
-  const { id, todo, isCompleted } = _todo;
 
   const editTodo = useCallback(
     async ({ todo, isCompleted }) => {

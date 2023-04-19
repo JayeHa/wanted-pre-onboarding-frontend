@@ -27,7 +27,7 @@ export const Todo = withAuth(() => {
 
       <ul>
         {todoList.map((todo) => (
-          <TodoItem todoItem={todo} key={todo.id} onDelete={onDelete} />
+          <TodoItem key={todo.id} todoItem={todo} onDelete={onDelete} />
         ))}
       </ul>
     </div>

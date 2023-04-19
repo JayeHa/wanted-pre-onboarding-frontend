@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
+    <main className="App">
       <h1>원티드 프리온보딩 프론트엔드</h1>
       <Outlet />
-    </div>
+    </main>
   );
-}
+};
 
 export default App;
